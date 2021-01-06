@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Auteur;
+use App\Entity\Produit;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -47,4 +49,33 @@ class AuteurRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    // public function findAuteursWithProduits($value)
+    // {
+    //     return $this->createQueryBuilder('a')
+    //         ->andWhere('a.id = :val')
+    //         ->setParameter('val', $value)
+    //         ->getQuery()
+    //         ->getResult();
+    // }
+
+    // public function findAuteursWithProduits()
+    // {
+    //     return $this->createQueryBuilder('a')
+    //         // ->andWhere('a.id = :val')
+    //         // ->setParameter('val', $value)
+    //         ->getQuery()
+    //         ->getResult();
+    // }
+
+
+    public function findAuteursWithProduits()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.id', 'a.auteur', 'COUNT(p.auteur) as nblivres')
+            ->innerJoin('a.produits', 'p', Join::WITH, 'a.id = p.auteur')
+            ->groupBy('p.auteur')
+            ->getQuery()
+            ->getResult();
+    }
 }

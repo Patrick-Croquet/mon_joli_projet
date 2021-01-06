@@ -18,7 +18,11 @@ class BdController extends AbstractController
      */
     public function index(AuteurRepository $repo, PaginatorInterface $paginator, Request $request)
     {
-        $allAuthors = $repo->findAll();
+        // $allAuthors = $repo->findAll();
+
+        // $allAuthors = $repo->findAuteursWithProduits(1);
+
+        $allAuthors = $repo->findAuteursWithProduits();
 
         //Paginate the results of the query
         $auteurs = $paginator->paginate(
